@@ -1,0 +1,41 @@
+name: CI — test & deploy to PythonAnywhere
+
+on:
+  push:
+    branches:
+      - main    # change if you deploy from another branch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+      - name: Install deps
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run tests (if any)
+        run: |
+          source .venv/bin/activate
+          if [ -d tests ] || [ -f pytest.ini ]; then pytest -q; else echo "No tests"; fi
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: ${{ needs.test.result == 'success' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to PythonAnywhere (pull & reload)
+        uses: umuttopalak/pythonanywhere-deploy-action@v1.1.0
+        with:
+          host: 'www.pythonanywhere.com'
+          username: ${{ secrets.PA_USERNAME }}
+          api_token: ${{ secrets.PA_API_TOKEN }}
+          domain_name: ${{ secrets.PA_DOMAIN }}
+          branch: 'main'
