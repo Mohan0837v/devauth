@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Create App{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="page-title">Create App</div>
+    <form method="post">
+      <div class="form-row"><label>Name</label><input name="name" required></div>
+      <div class="form-row"><label>Type</label>
+        <select name="type">
+          <option value="saml">SAML</option>
+          <option value="oauth">OAuth</option>
+        </select>
+      </div>
+      <div class="form-row"><label>Config (ACS URL for SAML or JSON for OAuth)</label><textarea name="metadata" rows="4"></textarea></div>
+      <button class="primary" type="submit">Create App</button>
+    </form>
+  </div>
+{% endblock %}
+

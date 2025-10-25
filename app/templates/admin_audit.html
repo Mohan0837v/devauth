@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Admin — Audit Log{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="row">
+      <div class="page-title">Audit log</div>
+      <div class="right"><a class="btn" href="/admin/apps">Back to apps</a></div>
+    </div>
+
+    <div style="margin-top:12px; overflow:auto;">
+      {% if logs %}
+        <table style="width:100%; border-collapse:collapse;">
+          <thead style="text-align:left;">
+            <tr>
+              <th style="padding:8px;border-bottom:1px solid rgba(15,23,42,0.06)">Time</th>
+              <th style="padding:8px;border-bottom:1px solid rgba(15,23,42,0.06)">Admin</th>
+              <th style="padding:8px;border-bottom:1px solid rgba(15,23,42,0.06)">Action</th>
+              <th style="padding:8px;border-bottom:1px solid rgba(15,23,42,0.06)">Target</th>
+              <th style="padding:8px;border-bottom:1px solid rgba(15,23,42,0.06)">Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for e in logs %}
+              <tr>
+                <td style="padding:8px;vertical-align:top;border-bottom:1px solid rgba(15,23,42,0.03)">{{ e.log.created_at }}</td>
+                <td style="padding:8px;vertical-align:top;border-bottom:1px solid rgba(15,23,42,0.03)">{{ e.user_email or "system" }}</td>
+                <td style="padding:8px;vertical-align:top;border-bottom:1px solid rgba(15,23,42,0.03)">{{ e.log.action }}</td>
+                <td style="padding:8px;vertical-align:top;border-bottom:1px solid rgba(15,23,42,0.03)">{{ e.log.target_type }} / {{ e.log.target_id }}</td>
+                <td style="padding:8px;vertical-align:top;border-bottom:1px solid rgba(15,23,42,0.03)"><pre style="white-space:pre-wrap;font-size:13px">{{ e.details }}</pre></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <div class="muted">No audit logs yet.</div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Workplace - devauth{% endblock %}
+{% block content %}
+  <div class="card">
+    <h3>Your Workplace</h3>
+
+    {% if tenant_admins %}
+      <div style="margin-bottom:12px">
+        <div class="muted">Tenant admin(s):</div>
+        <ul>
+          {% for a in tenant_admins %}
+            <li><strong>{{ a.email }}</strong>{% if a.full_name %} — {{ a.full_name }}{% endif %}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    {% if is_admin %}
+      <p><strong>Admin:</strong> <a class="btn" href="/admin/apps">Manage Apps</a> <a class="btn" href="/admin/users">Manage Users</a></p>
+    {% endif %}
+
+<ul>
+  {% for a in apps %}
+    <li style="margin-bottom:8px;">
+      <strong>{{ a.name }}</strong> ({{ a.type }}) —
+      Enabled: {{ a.enabled }}
+      <form method="post" action="/user/toggle/{{ a.ua_id }}" style="display:inline;">
+        <button class="btn secondary" type="submit">{{ "Disable" if a.enabled else "Enable" }}</button>
+      </form>
+
+      <!-- correct Launch link: open in a new tab -->
+      <a href="{{ url_for('sso.idp_initiate', app_id=a.app_id) }}" class="btn" target="_blank" rel="noopener noreferrer" style="margin-left:8px;">
+        Launch
+      </a>
+    </li>
+  {% else %}
+    <li>No apps assigned.</li>
+  {% endfor %}
+</ul>
+
+
+    <p><a class="link" href="/user/profile">Edit profile</a> | <a href="/auth/logout">Logout</a></p>
+  </div>
+{% endblock %}
+

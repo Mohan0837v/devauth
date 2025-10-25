@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Create User{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="page-title">Create User</div>
+    <form method="post">
+      <div class="form-row"><label>Email</label><input name="email" required></div>
+      <div class="form-row"><label>Full name</label><input name="full_name"></div>
+      <div class="form-row"><label>Password</label><input name="password" type="password" required></div>
+      <div class="form-row"><label><input type="checkbox" name="make_admin"> Make admin</label></div>
+      <button class="primary" type="submit">Create user</button>
+    </form>
+  </div>
+{% endblock %}
+

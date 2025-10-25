@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Profile — devauth{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="page-title">Profile</div>
+    <form method="post">
+      <div class="form-row">
+        <label>Email (read-only)</label>
+        <input type="email" value="{{ user.email }}" readonly>
+      </div>
+      <div class="form-row">
+        <label>Full name</label>
+        <input name="full_name" value="{{ user.full_name or '' }}">
+      </div>
+
+      <hr style="margin:12px 0">
+
+      <div class="muted" style="margin-bottom:8px">Change password (optional)</div>
+      <div class="form-row">
+        <label>Current password</label>
+        <input name="current_password" type="password">
+      </div>
+      <div class="form-row">
+        <label>New password</label>
+        <input name="new_password" type="password">
+      </div>
+
+      <button class="primary" type="submit">Save changes</button>
+    </form>
+  </div>
+{% endblock %}
+

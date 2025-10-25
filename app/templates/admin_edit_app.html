@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Edit App — devauth{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="page-title">Edit App</div>
+    <form method="post">
+      <div class="form-row"><label>Name</label><input name="name" value="{{ app.name }}" required></div>
+      <div class="form-row"><label>Type</label>
+        <select name="type">
+          <option value="saml" {% if app.type=='saml' %}selected{% endif %}>SAML</option>
+          <option value="oauth" {% if app.type=='oauth' %}selected{% endif %}>OAuth</option>
+        </select>
+      </div>
+      <div class="form-row"><label>Config (ACS URL for SAML or JSON for OAuth)</label><textarea name="metadata" rows="4">{{ app.config }}</textarea></div>
+      <button class="primary" type="submit">Save changes</button>
+      <a class="btn secondary" href="/admin/apps" style="margin-left:8px">Cancel</a>
+    </form>
+  </div>
+{% endblock %}
+

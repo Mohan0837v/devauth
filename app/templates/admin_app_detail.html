@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}App details — {{ app.name }}{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="row">
+      <div class="page-title">App — {{ app.name }}</div>
+      <div class="right">
+        <a class="btn" href="/admin/apps/edit/{{ app.id }}">Edit</a>
+        <form method="post" action="/admin/apps/delete" style="display:inline;">
+          <input type="hidden" name="app_id" value="{{ app.id }}"/>
+          <button class="btn" type="submit" onclick="return confirm('Delete this app?')">Delete</button>
+        </form>
+      </div>
+    </div>
+
+    <div style="margin-top:12px">
+      <div class="muted">Type: {{ app.type }}</div>
+      <div style="margin-top:10px;">
+        <div class="muted">Config:</div>
+        <pre style="white-space:pre-wrap; background:#f8fafc; padding:10px; border-radius:8px;">{{ parsed }}</pre>
+      </div>
+
+      <div style="margin-top:14px;">
+        <div class="muted">Assigned users</div>
+        {% if assigned %}
+          <ul>
+            {% for u in assigned %}
+              <li style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(15,23,42,0.03)">
+                <div><strong>{{ u.email }}</strong> <span class="muted">({{ u.name or '-' }})</span> — Enabled: {{ u.enabled }}</div>
+                <form method="post" action="/admin/apps/remove_assignment" style="display:inline;">
+                  <input type="hidden" name="ua_id" value="{{ u.ua_id }}"/>
+                  <button class="btn secondary" type="submit" onclick="return confirm('Remove assignment?')">Remove</button>
+                </form>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <div class="muted">No users assigned yet.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

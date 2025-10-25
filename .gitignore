@@ -1,0 +1,9 @@
+# Ignore Python virtual environment
+.venv/
+# Ignore the database file
+instance/devauth.db
+# Ignore compiled Python files
+__pycache__/
+*.pyc
+# Ignore sensitive configuration files (if any exist outside of instance)
+# Be sure to NOT commit files with secret keys or credentials!

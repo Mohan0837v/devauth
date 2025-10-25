@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Admin — Users{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="row">
+      <div class="page-title">Users</div>
+      <div class="right"><a class="btn" href="/admin/users/new">Create user</a></div>
+    </div>
+
+    <ul style="margin-top:12px;">
+      {% for u in users %}
+        <li style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(15,23,42,0.03)">
+          <div>
+            <div><strong>{{ u.email }}</strong> <span class="muted">({{ u.full_name or '-' }})</span></div>
+            <div class="muted" style="font-size:13px">Admin: {{ u.is_admin }}</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <form method="post" action="/admin/users/promote" style="display:inline;">
+              <input type="hidden" name="user_id" value="{{ u.id }}"/>
+              <button class="btn secondary" type="submit">{{ "Unpromote" if u.is_admin else "Promote" }}</button>
+            </form>
+
+            <form method="post" action="/admin/users/delete" style="display:inline;">
+              <input type="hidden" name="user_id" value="{{ u.id }}"/>
+              <button class="btn" type="submit" onclick="return confirm('Delete user {{ u.email }} (this will remove assignments)?')">Delete</button>
+            </form>
+          </div>
+        </li>
+      {% else %}
+        <li class="muted">No users yet</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}
+

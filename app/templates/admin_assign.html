@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Assign App{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="page-title">Assign App to User</div>
+    <form method="post">
+      <div class="form-row"><label>User email</label><input name="user_email" required></div>
+      <div class="form-row"><label>App</label>
+        <select name="app_id">
+          {% for a in apps %}<option value="{{ a.id }}">{{ a.name }} ({{ a.type }})</option>{% endfor %}
+        </select>
+      </div>
+      <button class="primary" type="submit">Assign</button>
+    </form>
+  </div>
+{% endblock %}
+

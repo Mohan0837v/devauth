@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Admin — Apps{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="row">
+      <div class="page-title">Apps</div>
+      <div class="right">
+	<a class="btn" href="/admin/audit">Audit</a>      
+        <a class="btn" href="/admin/apps/new">Create app</a>
+        <a class="btn" href="/admin/apps/assign">Assign app</a>
+      </div>
+    </div>
+
+    <div style="margin-top:12px;">
+      {% if apps %}
+        <ul>
+          {% for item in apps %}
+            {% set a = item.app %}
+            <li style="padding:12px 0;border-bottom:1px solid rgba(15,23,42,0.03)">
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div>
+                  <strong>{{ a.name }}</strong> — <span class="muted">{{ a.type }}</span>
+                  <div class="muted" style="font-size:13px;margin-top:6px">Config: {{ a.config|truncate(120) }}</div>
+                </div>
+                <div>
+                  <a class="btn secondary" href="/admin/apps/edit/{{ a.id }}">Edit</a>
+
+                  <form method="post" action="/admin/apps/delete" style="display:inline;">
+                    <input type="hidden" name="app_id" value="{{ a.id }}"/>
+                    <button class="btn" type="submit" onclick="return confirm('Delete this app and remove assignments?')">Delete</button>
+                  </form>
+                </div>
+              </div>
+
+              {% if item.assigned %}
+                <div style="margin-top:10px;padding-left:6px">
+                  <div class="muted" style="font-size:13px">Assigned users:</div>
+                  <ul>
+                    {% for u in item.assigned %}
+                      <li style="margin-top:6px;display:flex;gap:8px;align-items:center">
+                        <div>
+                          <strong>{{ u.email }}</strong> <span class="muted">({{ u.name or '-' }})</span>
+                          <span class="muted" style="margin-left:8px;font-size:13px">Enabled: {{ u.enabled }}</span>
+                        </div>
+                        <form method="post" action="/admin/apps/remove_assignment" style="margin-left:auto;">
+                          <input type="hidden" name="ua_id" value="{{ u.ua_id }}"/>
+                          <button class="btn secondary" type="submit" onclick="return confirm('Remove assignment for {{ u.email }}?')">Remove</button>
+                        </form>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              {% endif %}
+
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <div class="muted">No apps yet. Create one to test SSO flows.</div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+
