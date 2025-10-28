@@ -38,4 +38,3 @@ jobs:
           username: ${{ secrets.PA_USERNAME }}
           api_token: ${{ secrets.PA_API_TOKEN }}
           domain_name: ${{ secrets.PA_DOMAIN }}
-          branch: 'main'
