@@ -39,6 +39,5 @@ jobs:
           api_token: ${{ secrets.PA_API_TOKEN }}
           domain_name: ${{ secrets.PA_DOMAIN }}
           console_command:
-            git pull origin main # -------manually force the git pull
-            source /home/MohanV/.virtualenvs/devauth-venv/bin/activate
-            flask db upgrade # -------run the correct flask migration
+            git pull origin main && source /home/MohanV/.virtualenvs/devauth-venv/bin/activate && flask db upgrade
+
